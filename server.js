@@ -8,12 +8,19 @@ connectDB();
 
 const PORT = process.env.PORT || 5000;
 
+//middleware to use req.body...
+app.use(express.json({
+    extended: false
+}));
+
 app.get('/', (req, res) => {
     res.json({
         appname: 'contact keeper',
         status: 'running'
     })
 });
+
+
 
 //Define routers
 app.use('/api/users', require('./routes/users'));
