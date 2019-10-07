@@ -12,8 +12,17 @@ const router = express.Router();
 //@desc get auth user using token
 //@access Private
 
-router.get('/' ,auth, (req, res) => {
-    console.log(req.user);
+router.get('/' ,auth, async (req, res) => {
+    try{
+        const user = await User.findById(req.user.id).select('-password');
+        if(!user){
+            return res.status(400).json({msg: 'Invalid credentails'});
+        }
+        res.json(user);
+    }catch(err){
+        res.status(500).send('Server Error');
+    }
+
     res.send('user auth');
 });
 
