@@ -5,7 +5,17 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
+const auth = require('../middleware/auth');
 const router = express.Router();
+
+//@route GET api/auth
+//@desc get auth user using token
+//@access Private
+
+router.get('/' ,auth, (req, res) => {
+    console.log(req.user);
+    res.send('user auth');
+});
 
 //@route POST api/auth
 //@desc Auth user and get token
@@ -53,15 +63,6 @@ router.post('/',[
         console.log(err.message);
         res.status(500).send('Server error');
     }
-});
-
-//@route GET api/auth
-//@desc get auth user
-//@access Private
-
-router.get('/' ,(req, res) => {
-    
-    res.send('Auth user and get token');
 });
 
 module.exports = router;
