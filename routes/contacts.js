@@ -2,14 +2,22 @@ const express = require('express');
 
 const Contact = require('../models/Contact');
 const User = require('../models/User');
+const auth = require('../middleware/auth');
+
 const router = express.Router();
 
 //@route GET api/contacts
 //@desc GET all users contact
 //@access Private
 
-router.get('/', (req, res) => {
-    res.send('GET All users contact');
+router.get('/',auth, async (req, res) => {
+    try{
+        const contacts = await Contact.find({user: req.user.id}).sort({data: -1});
+        res.send(contacts);
+    }catch(err){
+        console.error(err.message);
+        res.send('Server Error');
+    }
 });
 
 //@route POST api/contacts
